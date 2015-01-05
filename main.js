@@ -292,6 +292,14 @@
   function getQueryVariable(variable, string) {
     
     var vars = string.split("&");
+    if (vars[0] != undefined) {
+      var first_var_parts = vars[0].split('?');
+      var first_var_parts_count = first_var_parts.length;
+      if (first_var_parts_count > 1) {
+        vars[0] = first_var_parts[first_var_parts_count - 1];
+      }
+    }
+
     for (var i=0; i<vars.length; i++) {
       var pair = vars[i].split("=");
       if (pair[0] == variable) {
@@ -313,7 +321,7 @@
         lng  : parseFloat(getQueryVariable("fLon", map_url), 10),
         zoom : 20
       };
-      alert(JSON.Stringify(initial_position));
+      alert(JSON.stringify(initial_position));
     }
     last_location = get_cookie("location");
     
