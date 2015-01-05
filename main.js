@@ -275,9 +275,9 @@
     $spinner = $("<div class='spinner'/>");
     $save = $("<button class='Butt'>SAVE LOCATION</button>");
     
-      $cancel = $("<button class='CancelButt'>CANCEL</button>");
-      $container.append($save);
-      $save.click(save_position);
+    $cancel = $("<button class='CancelButt'>CANCEL</button>");
+    $container.append($save);
+    $save.click(save_position);
     
     $link = $("<a href='https://www.flickr.com/groups/geotagging/discuss/72157594165549916/' target='_blank' class='link'>Feedback</a>");
     
@@ -573,7 +573,6 @@
     
     log("Get Photo Info");
     
-    var form = $submit_form;
     var data = {
       format: "json",
       api_key: API_KEY,
@@ -590,7 +589,7 @@
         THE_TITLE = infoResponse.photo.title._content;
         removeTags(THE_TAGS);
       } else {
-        form.html("Error getting data: " + infoResponse.message);
+        $submit_form.html("Error getting data: " + infoResponse.message);
       }
     });
   }
@@ -643,7 +642,7 @@
       saveGeotags(); 
       // if there were no tags to remove
     }
-   }
+  }
 
   // saves the geotags
   function saveGeotags() {
@@ -663,16 +662,15 @@
     };
     
     $.getJSON(SAVE_URL, data, function(tagResponse){
-     var form = $submit_form.find(".flickrmap_locationconfirm");
       if (tagResponse.stat == "ok"){
-        form.html("Geotags saved.");
+        $submit_form.html("Geotags saved.");
         if (IS_OWNER){
           setDescription();
         } else {
           addComment(theTag);
         }
       } else {
-        form.html("Geotag error: " + tagResponse.message);
+        $submit_form.html("Geotag error: " + tagResponse.message);
         if (!IS_OWNER) {
           theTag = "http://maps.google.com/maps?q=loc:" + theTag;
           addComment(theTag);
@@ -710,13 +708,12 @@
     };
     
     $.getJSON(SAVE_URL, data, function(comResponse){
-      var form = $submit_form.find(".flickrmap_locationconfirm");
       if (comResponse.stat == "ok"){
-        form.html("Comment saved");
+        $submit_form.html("Comment saved");
         window.location.reload();  
         // closes the map window after saving all locations and tags
       } else {
-        form.html("Comment error: " + comResponse.message);
+        $submit_form.html("Comment error: " + comResponse.message);
       }
     });
   }     
@@ -744,10 +741,11 @@
       var form = $submit_form.find(".flickrmap_locationconfirm");
 
       if (localResponse.stat == "ok"){
-        form.html("Saved");
+        $submit_form.html("Saved");
+        alert('Done');
         window.location.reload();  // closes the map window after saving all locations and tags
       } else {
-        form.html("Loc.alize.us error: " + localResponse.message);
+        $submit_form.html("Loc.alize.us error: " + localResponse.message);
       }
     });
   }     
