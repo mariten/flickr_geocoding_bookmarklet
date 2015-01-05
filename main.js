@@ -247,7 +247,7 @@
     
     $container.find(".breadcrumb h3").html(
       'Location for "'+
-      $("meta[name='title']").attr("content") +
+      $("meta[name='og:title']").attr("content") +
       '":'
     );
 
@@ -282,7 +282,7 @@
       $container.append($save);
       $save.click(save_position);
     
-    $link = $("<a href='http://www.flickr.com/groups/geotagging/discuss/72157594165549916/' target='_blank' class='link'>Feedback</a>");
+    $link = $("<a href='https://www.flickr.com/groups/geotagging/discuss/72157594165549916/' target='_blank' class='link'>Feedback</a>");
     
     $submit_form = $("<div>", {id: "submit_form"});
     $container.append($cancel).append($spinner).append($submit_form).append($link);
@@ -594,8 +594,8 @@
     $.getJSON(SAVE_URL, data, function(infoResponse){
       if (infoResponse.stat == "ok"){
         THE_TAGS = infoResponse.photo.tags.tag;
-         THE_DESCRIPTION = infoResponse.photo.description._content;      
-         THE_TITLE = infoResponse.photo.title._content;
+        THE_DESCRIPTION = infoResponse.photo.description._content;      
+        THE_TITLE = infoResponse.photo.title._content;
         removeTags(THE_TAGS);
       } else {
         form.html("Error getting data: " + infoResponse.message);
