@@ -130,7 +130,7 @@
 
     get_secrets = function(key){     
       var regex, match;
-      regex = new RegExp('"' + key + '":"([^"]*)"', "i");
+      regex = new RegExp('"' + key + '" = "([^"]*)"', "i");
       match = script.match(regex);
       return match && match[1];
     };
@@ -138,10 +138,13 @@
     MAGIC_COOKIE = $("input[name=magic_cookie]").val();
     
     API_SECRET = get_secrets("secret");
-    API_KEY = get_secrets("api_key");
+    API_KEY = get_secrets("root.YUI_config.flickr.api.site_key");
+    alert(API_KEY);
     AUTH_TOKEN = get_secrets("auth_token");
     AUTH_HASH = get_secrets("auth_hash");
-    PHOTO_ID = get_secrets("photo_id");
+    var url_parts = $("meta[name='og:url']").attr("content").split('/', 6);
+    PHOTO_ID = url_parts[5];
+    alert(PHOTO_ID);
     USER_NSID = get_secrets("nsid");
     OWNER_NSID = get_secrets("owner_nsid");
     IS_OWNER = USER_NSID == OWNER_NSID;
@@ -547,11 +550,7 @@
 
     data = {
       format: "json",
-      clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
-      auth_hash: AUTH_HASH,
-      auth_token: AUTH_TOKEN,
-      secret: API_SECRET,
       photo_id: PHOTO_ID,
       lat: lat,
       lon: lng,
@@ -579,13 +578,10 @@
     
     log("Get Photo Info");
     
+    var form = $submit_form;
     var data = {
       format: "json",
-      clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
-      auth_hash: AUTH_HASH,
-      auth_token: AUTH_TOKEN,
-      secret: API_SECRET,
       photo_id: PHOTO_ID,
       method: "flickr.photos.getInfo",
       cachebust: Number(new Date())
