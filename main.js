@@ -130,6 +130,8 @@
       var url_parts = $("meta[name='og:url']").attr("content").split('/', 6);
       PHOTO_ID = url_parts[5];
       alert(PHOTO_ID);
+
+      IS_OWNER = true;
       /*
       USER_NSID = get_secrets("nsid");
       OWNER_NSID = get_secrets("owner_nsid");
@@ -554,7 +556,8 @@
     if (IS_OWNER) {
       $.getJSON(SAVE_URL, data, function(saveResponse){          
         if (saveResponse.stat == "ok"){
-          form.html("Location Saved");
+          $('#submit_form').html("Location Saved");
+          alert('success');
           getInfo();
         } else {
           alert("Error: " + saveResponse.message);
