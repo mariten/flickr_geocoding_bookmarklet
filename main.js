@@ -127,6 +127,7 @@
     var script, match, get_secrets;
     
     script = $("script").not("[src]").last().html();
+    alert(script);
 
     get_secrets = function(key){     
       var regex, match;
