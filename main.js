@@ -534,16 +534,16 @@
     $save.removeClass("Butt").addClass("DisabledButt");
     var data = {}, form; 
     
+    /*
     form = $submit_form.find(".flickrmap_locationconfirm");
     $.each(form.serializeArray(), function(){
       data[this.name] = this.value;
     });
+    $.post(CONFIRM_URL, data, function(confirmResponse){
+    }, "json");
+    */
     
     $spinner.show();
-    
-    $.post(CONFIRM_URL, data, function(confirmResponse){
-                  
-    }, "json");
 
     data = {
       format: "json",
