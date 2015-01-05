@@ -23,6 +23,8 @@
     IS_OWNER,
     USER_NSID,
     PHOTO_ID,
+    CSRF,
+    REQUEST_ID,
     MARKER_SRC = BASE_URL + "/arrow.png",
     PANEL_SRC = "/photo_geopanel_fragment.gne",
     map,
@@ -155,6 +157,8 @@
     alert(PHOTO_ID);
     USER_NSID = get_secrets("nsid");
     OWNER_NSID = get_secrets("owner_nsid");
+    CSRF = window.auth.csrf;
+    alert(CSRF);
     IS_OWNER = USER_NSID == OWNER_NSID;
     
     log("Flickr params:", {
@@ -560,6 +564,7 @@
       format: "json",
       api_key: API_KEY,
       photo_id: PHOTO_ID,
+      csrf: CSRF,
       lat: lat,
       lon: lng,
       accuracy: Math.min(16, map.getZoom()),
