@@ -126,20 +126,27 @@
     log("Get Secrets");
     var script, match, get_secrets;
     
-    script = $("body").html();
-    alert(script);
+    script_tags = $("script").not("[src]");
 
     get_secrets = function(key){     
-      var regex, match;
-      regex = new RegExp('"' + key + '" = "([^"]*)"', "i");
-      match = script.match(regex);
-      return match && match[1];
+      for(var i = 0; i < script_tags.length; i++) {
+        var script = script_tags[i].text;
+        //alert("i=" + i + "\n" + script_tags[i]);
+        //alert(script);
+        //var regex = new RegExp('"' + key + '" = "([^"]*)"', "i");
+        //var matches = script.match(regex);
+        //if(matches[1] != undefined) {
+        //  return matches[1];
+        //}
+      }
+      return null;
     };
     
     MAGIC_COOKIE = $("input[name=magic_cookie]").val();
     
     API_SECRET = get_secrets("secret");
     API_KEY = get_secrets("root.YUI_config.flickr.api.site_key");
+    API_KEY = window.YUI_config.flickr.api.site_key;
     alert(API_KEY);
     AUTH_TOKEN = get_secrets("auth_token");
     AUTH_HASH = get_secrets("auth_hash");
