@@ -556,7 +556,7 @@
     if (IS_OWNER) {
       $.getJSON(SAVE_URL, data, function(saveResponse){          
         if (saveResponse.stat == "ok"){
-          $('#submit_form').html("Location Saved");
+          $submit_form.html("Location Saved");
           alert('success');
           getInfo();
         } else {
@@ -577,6 +577,7 @@
     var data = {
       format: "json",
       api_key: API_KEY,
+      csrf: CSRF,
       photo_id: PHOTO_ID,
       method: "flickr.photos.getInfo",
       cachebust: Number(new Date())
@@ -625,8 +626,9 @@
         format: "json",
         clientType: "yui-3-flickrapi-module",
         api_key: API_KEY,
+        csrf: CSRF,
         photo_id: PHOTO_ID,
-         tag_id: removeMe,
+        tag_id: removeMe,
         method: "flickr.photos.removeTag",
         cachebust: Number(new Date())  
       };
@@ -653,6 +655,7 @@
       format: "json",
       clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
+      csrf: CSRF,
       photo_id: PHOTO_ID,
       tags: theTag,
       method: "flickr.photos.addTags",
@@ -699,6 +702,7 @@
       format: "json",
       clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
+      csrf: CSRF,
       photo_id: PHOTO_ID,
       comment_text: theComment,
       method: "flickr.photos.comments.addComment",
@@ -728,6 +732,7 @@
       format: "json",
       clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
+      csrf: CSRF,
       photo_id: PHOTO_ID,
       description: theDescription,
       title:THE_TITLE,
