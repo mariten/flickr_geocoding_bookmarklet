@@ -126,7 +126,7 @@
     log("Get Secrets");
     var script, match, get_secrets;
     
-    script = $("script").not("[src]").last().html();
+    script = $("body").html();
     alert(script);
 
     get_secrets = function(key){     
