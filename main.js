@@ -122,13 +122,11 @@
   function get_secrets(){
     try {
       API_KEY = window.YUI_config.flickr.api.site_key;
-      alert(API_KEY);
+
       CSRF = window.auth.csrf;
-      alert(CSRF);
 
       var url_parts = $("meta[name='og:url']").attr("content").split('/', 6);
       PHOTO_ID = url_parts[5];
-      alert(PHOTO_ID);
 
       IS_OWNER = true;
       /*
@@ -293,14 +291,12 @@
     
     var map_url, match, last_location, parts = [];
     map_url = $(".static-maps").attr("href");
-    alert(map_url);
     if (map_url && getQueryVariable("fLat", map_url)){
       initial_position = {    
         lat  : parseFloat(getQueryVariable("fLat", map_url), 10),
         lng  : parseFloat(getQueryVariable("fLon", map_url), 10),
         zoom : 20
       };
-      alert(JSON.stringify(initial_position));
     }
     last_location = get_cookie("location");
     
@@ -476,10 +472,9 @@
       $.getJSON(SAVE_URL, data, function(saveResponse){          
         if (saveResponse.stat == "ok"){
           $submit_form.html("Location Saved");
-          alert('success');
           getInfo();
         } else {
-          alert("Error: " + saveResponse.message);
+          $submit_form.html("Error: " + saveResponse.message);
         }
       });
     } else {
@@ -656,7 +651,6 @@
 
       if (localResponse.stat == "ok"){
         $submit_form.html("Saved");
-        alert('Done');
         window.location.reload();  // closes the map window after saving all locations and tags
       } else {
         $submit_form.html("Loc.alize.us error: " + localResponse.message);
