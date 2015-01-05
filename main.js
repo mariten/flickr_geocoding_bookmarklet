@@ -304,45 +304,24 @@
   function get_initial_position(){
     log("Get Initial Position");
     
-    var src, match, last_location, parts = [];    
-    src = $("#photo-story-map-zoom-street").attr("src");
-    if (!src || src.indexOf("&clat")<1) {
-      src = $("#photo-story-map-zoom-street").attr("data-defer-src");
-    }
-    
-    if (src && getQueryVariable("clat", src)){
+    var map_url, match, last_location, parts = [];
+    map_url = $(".static-maps").attr("href");
+    alert(map_url);
+    if (map_url && getQueryVariable("fLat", map_url)){
       initial_position = {    
-        lat :parseFloat(getQueryVariable("clat", src), 10),
-        lng :parseFloat(getQueryVariable("clon", src), 10),
-        zoom :20
-       };
-    } else {   
-        // checks to see if the location is stored in geotags
-        var theLinksText = $("#sidecar a").text();
-        if (theLinksText.indexOf("geo:lat")>0) {
-         tagTrash = theLinksText.split("geo:lat=");
-         var clat=tagTrash[1].split("[")[0];
-        if (theLinksText.indexOf("geo:lon")>0) {
-          tagTrash = theLinksText.split("geo:lon=");
-           var clon=tagTrash[1].split("[")[0];
-        }
-         if (clat && clon){
-          initial_position = {    
-            lat :parseFloat(clat, 10),
-            lng :parseFloat(clon, 10),
-            zoom :20
-           };
-        }
-      }
-     }      
-     
+        lat  : parseFloat(getQueryVariable("fLat", map_url), 10),
+        lng  : parseFloat(getQueryVariable("fLon", map_url), 10),
+        zoom : 20
+      };
+      alert(JSON.Stringify(initial_position));
+    }
     last_location = get_cookie("location");
     
     if (last_location) {
       parts = last_location.split(",");
     } 
     
-    if (initial_position){
+    if (initial_position) {
       lat = initial_position.lat;
       lng = initial_position.lng;
       zoom = initial_position.zoom;
@@ -354,10 +333,8 @@
     
     map_type = parts[3];
     
-    address = $("#photoGeolocation-storylink").html() || 
-      get_cookie("address") || 
-      "Enter place name or address.";
-      address = address.replace(/&nbsp;/g," ").replace(/^\s+/, "");
+    address = get_cookie("address") || "Enter place name or address.";
+    address = address.replace(/&nbsp;/g," ").replace(/^\s+/, "");
   }
   
   function init_map(){
@@ -614,7 +591,7 @@
       });
     }
        
-     while (removeArray.length > 0) { 
+    while (removeArray.length > 0) { 
       var removeMe=removeArray.shift();
     
       if (removeArray.length == 0) { 
@@ -623,7 +600,6 @@
         
       data = {
         format: "json",
-        clientType: "yui-3-flickrapi-module",
         api_key: API_KEY,
         csrf: CSRF,
         photo_id: PHOTO_ID,
@@ -652,7 +628,6 @@
     var data, theTag = "geo:lat=" + lat + " geo:lon=" + lng + " geotagged";
     data = {
       format: "json",
-      clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
       csrf: CSRF,
       photo_id: PHOTO_ID,
@@ -698,7 +673,6 @@
     
      var data = {
       format: "json",
-      clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
       csrf: CSRF,
       photo_id: PHOTO_ID,
@@ -727,7 +701,6 @@
     
      var data = {
       format: "json",
-      clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
       csrf: CSRF,
       photo_id: PHOTO_ID,
