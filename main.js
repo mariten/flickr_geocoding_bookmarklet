@@ -15,11 +15,7 @@
     POST_URL = "https://www.ﬂickr.com/services/rest/",
     BOOKMARK_URL = "https://www.flickr.com/groups/geotagging/discuss/72157594165549916/",
     STYLES = '#flickr_bookmarklet{font-size:12px;position:fixed;text-align:left;width:1000px;height:500px;z-index:20003;display:block;left:50%;margin-left:-505px;margin-top:-255px;top:50%;background-color:#FFF;padding:10px;-moz-box-shadow:0 0 8px rgba(0,0,0,0.5);-moz-border-radius:4px 4px 4px 4px;}#flickr_bookmarklet .foot,#flickr_bookmarklet .mode-title{display:none;}#flickr_bookmarklet .map{width:1000px;height:400px;}#flickr_bookmarklet .location-overlay-wrapper{margin:0 0 1em 0;}#flickr_bookmarklet .close{background-image:url("http://l.yimg.com/g/images/close_x_sprite.png");border:0 none;cursor:pointer;height:16px;margin:0;padding:0;position:absolute;right:10px;top:10px;width:16px;}#flickr_bookmarklet .maximize{color:#666;cursor:pointer;position:absolute;right:36px;text-align:right;text-decoration:underline;top:10px;width:100px;}#flickr_bookmarklet.maximized{width:auto;height:auto;top:10px;left:10px;right:10px;bottom:10px;margin:0;}#flickr_bookmarklet.maximized .map{width:auto;margin:0 -10px;}#flickr_bookmarklet_background{background-color:#000;height:100%;left:0;opacity:.35;position:fixed;top:0;width:100%;z-index:20002;cursor:pointer;filter:alpha(opacity=35);}#flickr_bookmarklet form input{margin:0 .5em 1em .5em;width:20em;}#flickr_bookmarklet .DisabledButt,#flickr_bookmarklet .Butt{margin-right:5px;}#flickr_bookmarklet div.spinner{background:url("http://l.yimg.com/g/images/progress/balls-24x12-white.gif") no-repeat scroll 0 5px #FFF;display:inline-block;height:25px;margin:0 0 -9px 1em;width:24px;}#flickr_bookmarklet #submit_form button{display:none;}#flickr_bookmarklet #submit_form{margin-left:1em;}#flickr_bookmarklet #submit_form,#flickr_bookmarklet #submit_form fieldset,#flickr_bookmarklet #submit_form fieldset div div{display:inline-block;}#flickr_bookmarklet.no_location{width:300px;height:70px;margin-left:-205px;margin-top:-35px;text-align:center;}#flickr_bookmarklet.no_location div{margin:.5em 0 1em 0;}#flickr_bookmarklet .link{float:right;}#flickr_bookmarklet .edit_instruction,#flickr_bookmarklet #submit_form button{display:none;}.pac-container{z-index:20004 !important;}.pac-container:after{display:none;}',
-    MAGIC_COOKIE,
     API_KEY,
-    API_SECRET,
-    AUTH_TOKEN,
-    AUTH_HASH,
     IS_OWNER,
     USER_NSID,
     PHOTO_ID,
@@ -125,53 +121,33 @@
   }
   
   function get_secrets(){
-    log("Get Secrets");
-    var script, match, get_secrets;
-    
-    script_tags = $("script").not("[src]");
+    try {
+      API_KEY = window.YUI_config.flickr.api.site_key;
+      alert(API_KEY);
+      CSRF = window.auth.csrf;
+      alert(CSRF);
 
-    get_secrets = function(key){     
-      for(var i = 0; i < script_tags.length; i++) {
-        var script = script_tags[i].text;
-        //alert("i=" + i + "\n" + script_tags[i]);
-        //alert(script);
-        //var regex = new RegExp('"' + key + '" = "([^"]*)"', "i");
-        //var matches = script.match(regex);
-        //if(matches[1] != undefined) {
-        //  return matches[1];
-        //}
-      }
-      return null;
-    };
+      var url_parts = $("meta[name='og:url']").attr("content").split('/', 6);
+      PHOTO_ID = url_parts[5];
+      alert(PHOTO_ID);
+      /*
+      USER_NSID = get_secrets("nsid");
+      OWNER_NSID = get_secrets("owner_nsid");
+      IS_OWNER = USER_NSID == OWNER_NSID;
     
-    MAGIC_COOKIE = $("input[name=magic_cookie]").val();
-    
-    API_SECRET = get_secrets("secret");
-    API_KEY = get_secrets("root.YUI_config.flickr.api.site_key");
-    API_KEY = window.YUI_config.flickr.api.site_key;
-    alert(API_KEY);
-    AUTH_TOKEN = get_secrets("auth_token");
-    AUTH_HASH = get_secrets("auth_hash");
-    var url_parts = $("meta[name='og:url']").attr("content").split('/', 6);
-    PHOTO_ID = url_parts[5];
-    alert(PHOTO_ID);
-    USER_NSID = get_secrets("nsid");
-    OWNER_NSID = get_secrets("owner_nsid");
-    CSRF = window.auth.csrf;
-    alert(CSRF);
-    IS_OWNER = USER_NSID == OWNER_NSID;
-    
-    log("Flickr params:", {
-      MAGIC_COOKIE: MAGIC_COOKIE,
-      API_SECRET: API_SECRET,
-      API_KEY: API_KEY,
-      AUTH_TOKEN: AUTH_TOKEN,
-      AUTH_HASH: AUTH_HASH,
-      PHOTO_ID: PHOTO_ID,
-      USER_NSID: USER_NSID,
-      OWNER_NSID: OWNER_NSID,
-      IS_OWNER: IS_OWNER
-    });
+      log("Flickr params:", {
+        API_KEY: API_KEY,
+        PHOTO_ID: PHOTO_ID,
+        USER_NSID: USER_NSID,
+        OWNER_NSID: OWNER_NSID,
+        IS_OWNER: IS_OWNER
+      });
+      */
+      return true;
+
+    } catch (ex) {
+      return false;
+    }
   }
   
   function jquery_loaded(){
@@ -180,7 +156,11 @@
     $ = jQuery;
     $.noConflict();
     load_styles();
-    get_secrets();
+    var loaded_secrets =get_secrets();
+    if (!loaded_secrets) {
+      alert('Sorry, could not correctly fetch your user info');
+      return;
+    }
     
     $.get(PANEL_SRC, function(html){
       log("Get panel");
@@ -518,7 +498,6 @@
       edit_mode: "0," + edit_mode,
       latitude: lat,
       longitude: lng,
-      magic_cookie: MAGIC_COOKIE,
       viewgeo: 0
     };
     
@@ -643,9 +622,6 @@
         format: "json",
         clientType: "yui-3-flickrapi-module",
         api_key: API_KEY,
-        auth_hash: AUTH_HASH,
-        auth_token: AUTH_TOKEN,
-        secret: API_SECRET,
         photo_id: PHOTO_ID,
          tag_id: removeMe,
         method: "flickr.photos.removeTag",
@@ -674,9 +650,6 @@
       format: "json",
       clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
-      auth_hash: AUTH_HASH,
-      auth_token: AUTH_TOKEN,
-      secret: API_SECRET,
       photo_id: PHOTO_ID,
       tags: theTag,
       method: "flickr.photos.addTags",
@@ -723,9 +696,6 @@
       format: "json",
       clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
-      auth_hash: AUTH_HASH,
-      auth_token: AUTH_TOKEN,
-      secret: API_SECRET,
       photo_id: PHOTO_ID,
       comment_text: theComment,
       method: "flickr.photos.comments.addComment",
@@ -755,9 +725,6 @@
       format: "json",
       clientType: "yui-3-flickrapi-module",
       api_key: API_KEY,
-      auth_hash: AUTH_HASH,
-      auth_token: AUTH_TOKEN,
-      secret: API_SECRET,
       photo_id: PHOTO_ID,
       description: theDescription,
       title:THE_TITLE,
