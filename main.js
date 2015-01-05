@@ -573,7 +573,7 @@
           form.html("Location Saved");
           getInfo();
         } else {
-          form.html("Error: " + saveResponse.message);
+          alert("Error: " + saveResponse.message);
         }
       });
     } else {
